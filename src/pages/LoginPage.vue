@@ -24,12 +24,12 @@
             </div>
             <p>или:</p>
               <div class="form-outline mb-4">
-                <input type="text" class="form-control" placeholder="Email">
+                <input type="text" class="form-control" v-model="username" placeholder="Email">
               </div>
               <div class="form-outline mb-4">
-                <input type="text" class="form-control" placeholder="Пароль">
+                <input type="text" class="form-control" v-model="password" placeholder="Пароль">
               </div>
-              <button type="submit" class="btn btn-primary btn-block mb-1 w-100">Войти</button>
+              <button @click="authStore.login(username,password)" type="submit" class="btn btn-primary btn-block mb-1 w-100">Войти</button>
           </form>
         </div>
       </div>
@@ -38,10 +38,16 @@
 </div>
 </template>
 
-<script>
-export default {
-  name: "SignUpPage.vue"
-}
+<script setup>
+import {useAuthStore} from "@/stores/authStore.js";
+import {ref} from "vue";
+
+const authStore = useAuthStore();
+const username = ref('');
+const password = ref('');
+
+
+
 </script>
 
 <style lang="scss">
