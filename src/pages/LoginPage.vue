@@ -15,9 +15,11 @@
           <form class="text-center" action="">
             <p>Войти с помощью:</p>
             <div class="d-flex flex-row justify-content-center">
-            <div class="form-outline mx-2 mb-2 cursor-pointer text-blue">
-              <i class="bi bi-google fs-4"></i>
-            </div>
+              <GoogleLogin @success="onGoogleLoginSuccess" @error="onGoogleLoginError">
+                <div class="form-outline mx-2 mb-2 cursor-pointer text-blue">
+                  <i class="bi bi-google fs-4"></i>
+                </div>
+              </GoogleLogin>
             <div class="form-outline mx-2 mb-2 cursor-pointer text-blue">
               <i class="bi bi-facebook fs-4"></i>
             </div>
@@ -40,13 +42,12 @@
 
 <script setup>
 import {useAuthStore} from "@/stores/authStore.js";
+import {GoogleLogin} from "vue3-google-login";
 import {ref} from "vue";
 
 const authStore = useAuthStore();
 const username = ref('');
 const password = ref('');
-
-
 
 </script>
 

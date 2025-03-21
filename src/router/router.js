@@ -4,6 +4,7 @@ import AuthLayout from "@/layouts/AuthLayout.vue";
 import unAuthLayout from "@/layouts/UnAuthLayout.vue";
 import LoginPage from "@/pages/LoginPage.vue";
 import SignUpPage from "@/pages/SignUpPage.vue";
+import {useAuthStore} from "@/stores/authStore.js";
 
 const router = createRouter({
     history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -29,5 +30,14 @@ const router = createRouter({
 
     ]
 })
+router.beforeEach(async (to) => {
+    const publicPage=['/login', '/signup'];
+    const authRequired = !publicPage.includes(to.path);
+    const auth= useAuthStore();
 
+    if (authRequired && !auth.user){
+        auth.returnUrl = to.fullPath;
+        return '/login'
+    }
+})
 export default router;
