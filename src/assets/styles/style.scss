@@ -9,11 +9,11 @@
   //background-image: url('../../orig.png');
 }
 
-body,html{
+body, html {
   background-color: map-get($theme-colors, "primary");
   height: 100%;
   margin: 0;
-  background-image: url('../../orig.png');
+  background-image: url('public/orig.png');
 }
 
 .border-radius {
@@ -30,4 +30,29 @@ body,html{
 
 .text-blue {
   color: blue;
+}
+
+.btn-cst {
+  background-color: white;
+  border-color: rgba(28, 100, 255, 0.9);
+  color: rgba(28, 100, 255);
+}
+
+.btn-cst:hover {
+  background-color: white;
+  border-color: rgb(28, 100, 255);
+  color: rgba(28, 100, 255);
+  box-shadow: 0 0 7px rgba(28, 100, 255, 0.5);
+}
+
+.text-decor {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  font-weight: bold;
+  color: black;
+
+}
+
+.sans-serif {
+  font-family: sans-serif;
 }
