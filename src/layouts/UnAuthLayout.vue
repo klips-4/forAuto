@@ -36,7 +36,5 @@ import LoginPage from "@/pages/LoginPage.vue";
   z-index: 2;
 }
 
-.bg-cst {
-  background: rgba(255, 255, 255, 0.85); /* Полупрозрачный фон для модального окна */
-}
+
 </style>
