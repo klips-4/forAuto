@@ -49,10 +49,26 @@ body, html {
   font-family: 'Roboto', sans-serif;
   font-size: 1rem;
   font-weight: bold;
-  color: black;
-
+  color: $dark-bg;
 }
 
 .sans-serif {
   font-family: sans-serif;
+}
+
+.bg-cst {
+  background: $light-bg;
+
+  &.dark-theme {
+    background: $dark-bg;
+  }
+}
+
+.dark-theme .text-decor {
+  color: $white;
+
+}
+
+.bg-danger-cst {
+  background: rgba(255, 0, 0, 0.5);
 }
