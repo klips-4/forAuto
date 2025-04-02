@@ -28,6 +28,7 @@ export const useAuthStore = defineStore('auth',{
         },
 
         async isEmailFree(email) {
+            console.log(email)
             try{
                 const emailCheckResponse = await fetchWrapper.get(`${baseURL}/api/User/IsEmailFree/${email}`)
             } catch (message) {

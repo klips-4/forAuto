@@ -1,14 +1,14 @@
 <template>
   <div class="modal-dialog modal-dialog-centered" style="max-width: 400px; width: 90%">
-    <div class="modal-content">
+    <div class="modal-content d-flex justify-content-center">
       <div class="modal-body border-radius p-5 bg-cst">
 
         <ul style="border-radius: 5px" class="nav nav-pills nav-justified mb-3 bg-light">
           <li class="nav-item">
-            <router-link  class="nav-link text-dark sans-serif" to="/login">Авторизация</router-link>
+            <router-link class="nav-link text-dark sans-serif" to="/login">Авторизация</router-link>
           </li>
           <li class="nav-item">
-            <router-link  class="nav-link text-dark active-position sans-serif" to="/signup">Регистрация</router-link>
+            <router-link class="nav-link text-dark active-position sans-serif" to="/signup">Регистрация</router-link>
           </li>
         </ul>
 
@@ -45,9 +45,9 @@
               </div>
               <div class="form-outline mb-4">
                 <input
-                    type="text"
                     class="form-control sans-serif"
                     v-model="password"
+                    type="password"
                     placeholder="Пароль">
               </div>
               <div class="form-outline mb-4">
@@ -58,27 +58,54 @@
                     placeholder="Телефон">
               </div>
               <button
-                      type="submit"
-                      :disabled="true"
-                      class="btn btn-primary btn-block mb-1 w-100 sans-serif fw-bold">Зарегистрироваться
+                  type="submit"
+                  :disabled="!email.length"
+                  class="btn btn-primary btn-block mb-3 w-100 sans-serif fw-bold"
+                  @click="authStore.isEmailFree(lowerCased(email))"
+              >
+                Подтвердить почту
+              </button>
+              <button
+                  type="submit"
+                  :disabled="true"
+                  class="btn btn-primary btn-block mb-1 w-100 sans-serif fw-bold"
+              >
+                Зарегистрироваться
               </button>
             </form>
           </div>
         </div>
       </div>
     </div>
+            <Modal
+            :isModalOpen="isModalOpen"
+            />
   </div>
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {ref, watch} from "vue";
+import {useAuthStore} from "@/stores/authStore.js";
+import Modal from "@/components/Modal.vue";
 
-const lastName = ref("")
-const firstName = ref("")
-const middleName = ref("")
-const email = ref("")
-const password = ref("")
-const phoneNumber = ref("")
+const lastName = ref("");
+const firstName = ref("");
+const middleName = ref("");
+const email = ref("");
+const password = ref("");
+const phoneNumber = ref("");
+
+const authStore = useAuthStore();
+const isModalOpen = ref(false)
+
+function lowerCased(text) {
+  const lower = []
+  text.split(' ').forEach(word => {
+    lower.push(word.toLowerCase())
+  })
+  return lower.join(' ')
+}
+
 </script>
 
 <style lang="scss">
