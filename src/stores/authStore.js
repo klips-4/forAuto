@@ -33,6 +33,11 @@ export const useAuthStore = defineStore('auth',{
                 return true;
             } catch (message) {
                 this.emailStatus = message;
+
+                setTimeout(() => {
+                    this.emailStatus  = null;
+                }, 5000)
+
                 return false;
             }
         },

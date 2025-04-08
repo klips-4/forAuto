@@ -67,8 +67,8 @@
                 Подтвердить почту
               </button>
 
-              <div v-if="errorMessage" class="text-danger mt-2">
-                {{ errorMessage }}
+              <div v-if="authStore.emailStatus" class="text-danger mt-2">
+                {{ emailStatus }}
               </div>
 
               <div v-if="isModalOpen" class="mt-4">
@@ -79,7 +79,11 @@
                     placeholder="Введите код">
                 <div class="d-flex justify-content-between">
                   <span>{{ remainingTime }} секунд</span>
-                  <button class="btn btn-secondary">Продолжить</button>
+                  <button
+                      class="btn btn-primary sans-serif"
+                  >
+                    Продолжить
+                  </button>
                 </div>
               </div>
 
@@ -105,7 +109,7 @@ const phoneNumber = ref("");
 const authStore = useAuthStore();
 const isModalOpen = ref(false)
 const remainingTime = ref(30);
-const errorMessage = ref("")
+const emailStatus = ref("")
 
 
 async function handleSubmit() {
@@ -114,10 +118,9 @@ async function handleSubmit() {
     isModalOpen.value = true;
     startTimer()
   } else {
-   errorMessage.value = authStore.emailStatus
+    emailStatus.value = authStore.emailStatus
   }
 }
-
 
 function lowerCased(text) {
   const lower = []
@@ -129,7 +132,7 @@ function lowerCased(text) {
 
 let timer;
 const startTimer = () => {
-
+  clearInterval(timer);
   timer = setInterval(() => {
     if (remainingTime.value > 0) {
       remainingTime.value--;
@@ -157,13 +160,7 @@ onUnmounted(() => {
   clearInterval(timer);
 });
 
-setTimeout(() => {
-  errorMessage.value = ''
-}, 7000)
 
-watch(authStore.errorMessage, (data) => {
-  errorMessage.value = data
-})
 
 </script>
 
