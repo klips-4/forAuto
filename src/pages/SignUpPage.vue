@@ -79,7 +79,11 @@
                     placeholder="Введите код">
                 <div class="d-flex justify-content-between">
                   <span>{{ remainingTime }} секунд</span>
-                  <button class="btn btn-secondary">Продолжить</button>
+                  <button
+                      class="btn btn-primary sans-serif"
+                  >
+                    Продолжить
+                  </button>
                 </div>
               </div>
 
