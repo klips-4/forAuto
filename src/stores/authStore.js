@@ -7,7 +7,8 @@ export const useAuthStore = defineStore('auth',{
     state: () => ({
         user: JSON.parse(localStorage.getItem('user')),
         returnUrl: null,
-        errorMessage: null
+        errorMessage: null,
+        emailStatus: null
     }),
     actions: {
         async login(username, password) {
@@ -23,6 +24,20 @@ export const useAuthStore = defineStore('auth',{
                     this.errorMessage = null;
                 }, 5000)
             }
+
+        },
+
+        async isEmailFree(email) {
+            try{
+                await fetchWrapper.get(`${baseURL}/api/User/IsEmailFree/${email}`)
+                return true;
+            } catch (message) {
+                this.emailStatus = message;
+                return false;
+            }
+        },
+
+        async signUp() {
 
         },
 
