@@ -61,7 +61,7 @@
 
               <button
                   type="submit"
-                  :disabled="!email.length || isModalOpen"
+                  :disabled="(!email.length || isModalOpen) || !phoneNumber.length || !password.length"
                   class="btn btn-primary btn-block w-100 sans-serif fw-bold"
               >
                 Подтвердить почту
