@@ -14,7 +14,7 @@
 
         <div class="tab-content">
           <div class=" ">
-            <form class="text-center" action="">
+            <form class="text-center" @submit.prevent="handleSubmit">
               <div class="form-outline mb-4">
                 <input
                     type="text"
@@ -43,6 +43,7 @@
                     v-model="email"
                     placeholder="Email">
               </div>
+
               <div class="form-outline mb-4">
                 <input
                     class="form-control sans-serif"
@@ -57,36 +58,42 @@
                     v-model="phoneNumber"
                     placeholder="Телефон">
               </div>
+
               <button
                   type="submit"
-                  :disabled="!email.length"
-                  class="btn btn-primary btn-block mb-3 w-100 sans-serif fw-bold"
-                  @click="authStore.isEmailFree(lowerCased(email))"
+                  :disabled="!email.length || isModalOpen"
+                  class="btn btn-primary btn-block w-100 sans-serif fw-bold"
               >
                 Подтвердить почту
               </button>
-              <button
-                  type="submit"
-                  :disabled="true"
-                  class="btn btn-primary btn-block mb-1 w-100 sans-serif fw-bold"
-              >
-                Зарегистрироваться
-              </button>
+
+              <div v-if="errorMessage" class="text-danger mt-2">
+                {{ errorMessage }}
+              </div>
+
+              <div v-if="isModalOpen" class="mt-4">
+                <input
+                    type="text"
+                    class="form-control sans-serif mb-2"
+                    maxlength="4"
+                    placeholder="Введите код">
+                <div class="d-flex justify-content-between">
+                  <span>{{ remainingTime }} секунд</span>
+                  <button class="btn btn-secondary">Продолжить</button>
+                </div>
+              </div>
+
             </form>
           </div>
         </div>
       </div>
     </div>
-            <Modal
-            :isModalOpen="isModalOpen"
-            />
   </div>
 </template>
 
 <script setup>
-import {ref, watch} from "vue";
+import {onMounted, onUnmounted, ref, watch} from "vue";
 import {useAuthStore} from "@/stores/authStore.js";
-import Modal from "@/components/Modal.vue";
 
 const lastName = ref("");
 const firstName = ref("");
@@ -97,6 +104,20 @@ const phoneNumber = ref("");
 
 const authStore = useAuthStore();
 const isModalOpen = ref(false)
+const remainingTime = ref(30);
+const errorMessage = ref("")
+
+
+async function handleSubmit() {
+  const isFree = await authStore.isEmailFree(lowerCased(email.value));
+  if (isFree) {
+    isModalOpen.value = true;
+    startTimer()
+  } else {
+   errorMessage.value = authStore.emailStatus
+  }
+}
+
 
 function lowerCased(text) {
   const lower = []
@@ -105,6 +126,44 @@ function lowerCased(text) {
   })
   return lower.join(' ')
 }
+
+let timer;
+const startTimer = () => {
+
+  timer = setInterval(() => {
+    if (remainingTime.value > 0) {
+      remainingTime.value--;
+    } else {
+      closeModal();
+    }
+  }, 1000);
+};
+
+const closeModal = () => {
+  resetTimer();
+  clearInterval(timer);
+  isModalOpen.value = false
+}
+
+const resetTimer = () => {
+  remainingTime.value = 30;
+}
+
+onMounted(() => {
+  resetTimer();
+});
+
+onUnmounted(() => {
+  clearInterval(timer);
+});
+
+setTimeout(() => {
+  errorMessage.value = ''
+}, 7000)
+
+watch(authStore.errorMessage, (data) => {
+  errorMessage.value = data
+})
 
 </script>
 

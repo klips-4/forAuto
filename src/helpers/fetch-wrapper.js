@@ -34,18 +34,17 @@ function authHeader(url) {
 
 function handleResponse(response) {
     return response.text().then(text => {
-        const data = text && JSON.parse(text);
-
-        if(!response.ok) {
-            const {user, logout} = useAuthStore();
-            if([401, 403].includes(response.status) && user) {
+        // Если ответ успешный, пытаемся разобрать как JSON
+        if (response.ok) {
+            return text ? JSON.parse(text) : {}; // Если текст пустой, возвращаем пустой объект
+        } else {
+            // Если ответ не успешный, возвращаем текст ошибки
+            const error = text || response.statusText; // Используем текст ответа или статус
+            const { user, logout } = useAuthStore();
+            if ([401, 403].includes(response.status) && user) {
                 logout();
             }
-
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
+            return Promise.reject(error); // Возвращаем ошибку
         }
-
-        return data;
-    })
+    });
 }
